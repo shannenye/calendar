@@ -11,6 +11,7 @@ class MonthView extends Component {
         this.state = {
             isOpen: false
         }
+
     }
     componentDidMount() {
         this.props.getEvents();
@@ -19,6 +20,8 @@ class MonthView extends Component {
     render() {
         let dayArr = [];
         let set = new Set();
+        let currentMonth = new Date().getMonth() + 1;
+        let daysInMonth = new Date(2018, currentMonth, 0).getDate();
 
         this.props.loadEvents.map(event => {
             if (!set.has(Number(event.day))) {
@@ -26,29 +29,39 @@ class MonthView extends Component {
             }
         })
 
-        for (let day = 1; day <= 31; day++) {
+        for (let day = 1; day <= daysInMonth; day++) {
             if (set.has(day)) {
                 dayArr.push(
                     <li key={day}>
-                        <Popup trigger={<button className="day">{day}</button>}>
-                            <AddEvent id={day} />
+                        <Popup trigger={<button className="day">{day}</button>} modal>
+                            {close => (
+                                <div className="modal">
+                                    <a className="close" onClick={close}>Add Event</a>
+                                    <AddEvent id={day} close={close} currentMonth={currentMonth} />
+                                </div>
+                            )}
                         </Popup>
-                        <div>
-                            <Link to={`/${day}`} key={day}>
-                                <button className="visibleEvent">
-                                    <span className="dot" />
-                                    <span className="dot" />
-                                    <span className="dot" />
-                                </button>
+                            <Link to={`/${day}`} day={day}>
+                                <div>
+                                    <button className="visibleEvent">
+                                        <span className="dot" />
+                                        <span className="dot" />
+                                        <span className="dot" />
+                                    </button>
+                                </div>
                             </Link>
-                        </div>
                     </li>
                 )
             } else {
                 dayArr.push(
                     <li key={day}>
-                        <Popup trigger={<button className="day">{day}</button>}>
-                            <AddEvent id={day} />
+                        <Popup trigger={<button className="day">{day}</button>} modal>
+                            {close => (
+                                <div className="modal">
+                                    <a className="close" onClick={close}>Add Event</a>
+                                    <AddEvent id={day} close={close} currentMonth={currentMonth} />
+                                </div>
+                            )}
                         </Popup>
                         <div className="invisibleEvent">
                             <span className="hiddenDot" />
