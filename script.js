@@ -1,6 +1,6 @@
 const db = require('./CalendarBackend/db/db');
-const {User} = require('./CalendarBackend/db/models/index')
-const {Events} = require('./CalendarBackend/db/models/index')
+const { User } = require('./CalendarBackend/db/models/index')
+const { Events } = require('./CalendarBackend/db/models/index')
 
 const users = [
     {
