@@ -115,15 +115,13 @@ body {
 }
 
 .form-content {
-    background-color: #fefefe;
-    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    width: 80%;
+    margin: 5% auto 15% auto;
     border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-    height: 100%;
 }
 
 .form-container {
-    padding: 16px;
+    padding: 50px;
 }
 
 .dot {
@@ -132,6 +130,13 @@ body {
     background-color: #bbb;
     border-radius: 50%;
     display: inline-block;
+    opacity: 0.6;
+}
+
+.dot:hover {
+    opacity: 1;
+    cursor: pointer;
+    background: black;
 }
 
 .hiddenDot {
