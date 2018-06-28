@@ -7,18 +7,18 @@ const Events = db.define('events', {
         allowNull: false
     },
     start: {
-        type: Sequelize.TEXT,
+        type: Sequelize.DATE,
         allowNull: false
     },
     end: {
-        type: Sequelize.TEXT,
+        type: Sequelize.DATE,
         allowNull: false
     },
     description: {
         type: Sequelize.TEXT
     },
     day: {
-        type: Sequelize.TEXT,
+        type: Sequelize.INTEGER,
         allowNull: false
     }
 });
