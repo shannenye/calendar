@@ -18,8 +18,10 @@ export default function reducer (events = [], action) {
             return [action.event, ...events];
         case UPDATE:
             return events.map(event => (
-                action.events.id === event.id ? action.event : event
+                action.event.id === event.id ? action.event : event
             ));
+        case REMOVE:
+            return events.filter(event => event.id !== action.id)
         default:
             return events;
     }
@@ -37,10 +39,10 @@ export const createEvent = (newEvent) => dispatch => {
         .catch(err => console.error(`Could not create current event`, err))
 };
 
-export const updateEvent = (id, currentEvent) => dispatch => {
-    axios.put(`/api/events/${id}`, currentEvent)
+export const updateEvent = (currentEventId, currentEvent) => dispatch => {
+    axios.put(`/api/events/${currentEventId}`, currentEvent)
         .then(res => dispatch(update(res.data)))
-        .catch(err => console.error(`Could not update event with ID: ${id}`, err))
+        .catch(err => console.error(`Could not update event with ID: ${currentEventId}`, err))
 };
 
 export const deleteEvent = (id) => dispatch => {
