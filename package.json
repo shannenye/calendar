@@ -40,7 +40,8 @@
     "test": "mocha **.spec.js --watch",
     "build": "webpack -w",
     "start-dev": "NODE_ENV='development' npm run build -watch & npm run start-server",
-    "start-server": "nodemon CalendarBackend/index.js"
+    "start-server": "nodemon CalendarBackend/index.js",
+    "script": "node script.js"
   },
   "repository": {
     "type": "git",
