@@ -13,6 +13,12 @@ router.post('/', (req, res, next) => {
         .catch(next);
 });
 
+router.get('/:id', (req, res, next) => {
+    Events.findById(req.params.id)
+        .then(foundSingleEvent => res.json(foundSingleEvent))
+        .catch(next);
+});
+
 router.put('/:id', (req, res, next) => {
     Events.findById(req.params.id)
         .then(foundEvent => foundEvent.update(req.body))
