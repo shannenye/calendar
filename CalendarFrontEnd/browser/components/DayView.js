@@ -38,7 +38,7 @@ class DayView extends Component {
                                     {close => (
                                         <div className="modal">
                                             <a className="close" onClick={close}>Enter Updated Info</a>
-                                            <UpdateEvent id={currentDay} eventID={event.id} close={close}/>
+                                            <UpdateEvent id={currentDay} event={event} close={close}/>
                                         </div>
                                     )}
                                 </Popup>
@@ -59,7 +59,6 @@ const mapStateToProps = storeState => {
 
 const mapDispatchToProps = dispatch => ({
     getEvents: () => dispatch(getEvents()),
-    updateEvent: (id, currentEvent) => dispatch(updateEvent(id, currentEvent)),
     deleteEvent: (id) => dispatch(deleteEvent(id))
 });
 

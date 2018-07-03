@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from  'react-redux';
-import { updateEvent } from '../store/events';
+import { updateEvent, getCurrentEvent } from '../store/events';
 
 class UpdateEvent extends Component {
     constructor(props) {
@@ -26,27 +26,31 @@ class UpdateEvent extends Component {
         this.handleDay = this.handleDay.bind(this);
     }
 
+    componentDidMount() {
+        this.props.getCurrentEvent(this.props.loadCurrentEvent.id);
+    }
+
     handleSubmit(event) {
         event.preventDefault();
         const currentDay = this.props.id;
         const currentMonth = 7;
-        const currentEvent = this.props.currentEvent;
-        const startHour = this.state.startHour;
-        const startMinutes = Number(this.state.startMinutes);
-        const endHour = this.state.endHour;
-        const endMinutes = Number(this.state.endMinutes);
+        const currentEvent = this.props.loadCurrentEvent;
+        const currentEventStartDetails = new Date(currentEvent.start);
+        const currentEventEndDetails = new Date(currentEvent.end);
+        const startHour = this.state.startHour ? this.state.startHour : `${currentEventStartDetails.getHours() + 4}`;
+        const startMinutes = Number(this.state.startMinutes ? this.state.startMinutes : currentEventStartDetails.getMinutes());
+        const endHour = this.state.endHour ? this.state.endHour : `${currentEventEndDetails.getHours() + 4}`;
+        const endMinutes = Number(this.state.endMinutes ? this.state.endMinutes : currentEventEndDetails.getMinutes());
         const startTime = new Date(2018, currentMonth - 1, currentDay, startHour - 4, startMinutes);
         const endTime = new Date(2018, currentMonth - 1, currentDay, endHour - 4, endMinutes);
 
-        this.props.updateEvent(currentEvent, {
-            title: this.state.title,
-            start: startTime,
-            end: endTime,
-            description: this.state.description,
+        this.props.updateEvent(currentEvent.id, {
+            title: this.state.title ? this.state.title : currentEvent.title,
+            start: startTime ? startTime : currentEvent.start,
+            end: endTime ? endTime : currentEvent.end,
+            description: this.state.description ? this.state.description : currentEvent.description,
             day: currentDay
         });
-
-
         this.props.close();
     }
 
@@ -104,52 +108,56 @@ class UpdateEvent extends Component {
             <div className="form">
                 <form onSubmit={this.handleSubmit} className="form-content">
                     <div className="form-container">
-                        <div>
+
                         <label>
                             Event Name:
                             <input type="text" value={this.state.title} onChange={this.handleTitle} placeholder="Event Name..." />
                         </label>
-                        </div>
 
-                        <div>
+
+
                         <label>
                             Start Time:
                             <select value={this.state.startHour} onChange={this.handleStartHour}>
+                                <option className="holder">Hour</option>
                                 {
                                     startHourArr.map(hour => hour)
                                 }
                             </select>
+
                             <select value={this.state.startMinutes} onChange={this.handleStartMinute}>
+                                <option className="holder">Minutes</option>
                                 {
                                     startMinutesArr.map(minutes => minutes)
                                 }
                             </select>
                         </label>
-                        </div>
 
-                        <div>
+
+
                         <label>
                             End Time:
                             <select value={this.state.endHour} onChange={this.handleEndHour}>
+                                <option className="holder">Hour</option>
                                 {
                                     endHourArr.map(hour => hour)
 
                                 }
                             </select>
                             <select value={this.state.endMinutes} onChange={this.handleEndMinute}>
+                                <option className="holder">Minutes</option>
                                 {
                                     endMinutesArr.map(minutes => minutes)
                                 }
                             </select>
                         </label>
-                        </div>
 
-                        <div>
+
                         <label>
                             Description:
                             <input type="text" value={this.state.description} onChange={this.handleDescription} placeholder="Description..." />
                         </label>
-                        </div>
+
 
                         <button type="submit">Submit</button>
                         <button type="cancel" onClick={() => this.props.close()}>Cancel</button>
@@ -163,13 +171,14 @@ class UpdateEvent extends Component {
 const mapStateToProps = (storeState, ownProps) => {
     return {
         loadEvents: storeState.events,
-        currentMonth: ownProps.currentMonths,
-        currentEvent: ownProps.eventID
+        currentMonth: ownProps.currentMonth,
+        loadCurrentEvent: ownProps.event
     }
 };
 
 const mapDispatchToProps = dispatch => ({
-    updateEvent: (id, currentEventId, event) => dispatch(updateEvent(id, currentEventId, event))
+    updateEvent: (currentEventId, updatedEvent) => dispatch(updateEvent(currentEventId, updatedEvent)),
+    getCurrentEvent: (currentEventId) => dispatch(getCurrentEvent(currentEventId))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UpdateEvent);
